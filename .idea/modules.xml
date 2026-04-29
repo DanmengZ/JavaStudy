@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/01_StarPaySystem/01_StarPaySystem.iml" filepath="$PROJECT_DIR$/01_StarPaySystem/01_StarPaySystem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/02_MovieTheater/02_MovieTheater.iml" filepath="$PROJECT_DIR$/02_MovieTheater/02_MovieTheater.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JavaStudy.iml" filepath="$PROJECT_DIR$/JavaStudy.iml" />
+    </modules>
+  </component>
+</project>
