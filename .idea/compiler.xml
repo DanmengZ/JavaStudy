@@ -6,8 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="03_KOGame" />
+        <module name="04_Car" />
+        <module name="05_StudentSystem" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="03_KOGame" target="25" />
+    </bytecodeTargetLevel>
   </component>
 </project>
