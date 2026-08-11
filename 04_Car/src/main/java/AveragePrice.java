@@ -1,3 +1,5 @@
+package main.java;
+
 public class AveragePrice {
     public static double getAveragePrice(Car[] arr) {
         int sum = 0;
