@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学生信息</title>
+</head>
+<body>
+
+<h1>学生管理系统</h1>
+
+<h2>添加学生</h2>
+
+姓名：
+<input id="nameInput">
+<br><br>
+
+年龄：
+<input id="ageInput">
+<br><br>
+
+成绩：
+<input id="gradeInput">
+<br><br>
+
+<button id="addBtn">添加学生</button>
+<p id="message"></p>
+
+<hr>
+
+<h2>学生列表</h2>
+<div id="studentInfo"></div>
+
+<script>
+    let students =[
+        {
+            name:"Alice",
+            age:21,
+            grade:88
+        },
+        {
+            name:"Bob",
+            age:22,
+            grade:75
+        },
+        {
+            name:"Jack",
+            age:20,
+            grade:55
+        }
+    ];
+
+    let studentInfo = document.getElementById("studentInfo");
+    let message = document.getElementById("message");
+
+    let nameInput = document.getElementById("nameInput");
+    let ageInput = document.getElementById("ageInput");
+    let gradeInput = document.getElementById("gradeInput");
+
+    let addBtn = document.getElementById("addBtn");
+
+    function getResult(student){
+        if(student.grade >= 60){
+            return "是";
+        }else{
+            return "否";
+        }
+    }
+
+    function showInfo() {
+        let html = "";
+
+        for (let i = 0; i < students.length; i++) {
+
+            let student = students[i];
+            let result = getResult(student);
+
+            html += `
+                <div>
+                    <strong>姓名：</strong>${student.name}<br>
+                    <strong>年龄：</strong>${student.age}<br>
+                    <strong>成绩：</strong>${student.grade}<br>
+                    <strong>是否通过：</strong>${result}<br>
+                    新成绩：
+                    <input class="scoreInput">
+
+                    <button class="editBtn" data-index="${i}">
+                    修改
+                    </button>
+                    <button class="deleteBtn" data-index="${i}">
+                    删除
+                    </button>
+
+                    <hr>
+                </div>
+            `;
+        }
+        studentInfo.innerHTML = html;
+
+        let scoreInputs = document.querySelectorAll(".scoreInput");
+        let editBtns = document.querySelectorAll(".editBtn");
+
+        for (let i = 0; i < editBtns.length; i++) {
+            editBtns[i].addEventListener("click", function () {
+
+                let index = this.dataset.index;
+                let scoreInput = scoreInputs[index];
+                let score = Number(scoreInput.value);
+
+                if(scoreInput.value === ""){
+                    message.innerHTML = "请输入成绩";
+                    return;
+                }
+
+                if (isNaN(score)) {
+                    message.innerHTML = "请输入数字";
+                    return;
+                }
+
+                if (score < 0 || score > 100) {
+                    message.innerHTML = "成绩必须在0到100之间";
+                    return;
+                }
+
+                students[index].grade = score;
+                showInfo();
+                message.innerHTML = "修改成功!";
+
+            });
+        }
+        let deleteBtns = document.querySelectorAll(".deleteBtn");
+        for (let i = 0; i < deleteBtns.length; i++) {
+            deleteBtns[i].addEventListener("click", function () {
+                let index = this.dataset.index;
+                students.splice(index, 1);
+                showInfo();
+                message.innerHTML = "删除成功！";
+            });
+        }
+    }
+
+    function addStudent(){
+        let name = nameInput.value;
+        let age = Number(ageInput.value);
+        let grade = Number(gradeInput.value);
+
+        if(name === ""){
+            message.innerHTML = "姓名不能为空";
+            return;
+        }
+
+        if(ageInput.value === ""){
+            message.innerHTML = "请输入年龄";
+            return;
+        }
+
+        if(isNaN(age)){
+            message.innerHTML = "年龄必须是数字";
+            return;
+        }
+
+        if(age <= 0){
+            message.innerHTML = "年龄必须大于0";
+            return;
+        }
+
+        if(gradeInput.value === ""){
+            message.innerHTML = "请输入成绩";
+            return;
+        }
+
+        if(isNaN(grade)){
+            message.innerHTML = "成绩必须是数字";
+            return;
+        }
+
+        if(grade < 0 || grade > 100){
+            message.innerHTML = "成绩必须在0到100之间";
+            return;
+        }
+
+        let student = {
+            name:name,
+            age:age,
+            grade:grade
+        };
+
+        students.push(student);
+        showInfo();
+
+        nameInput.value = "";
+        ageInput.value = "";
+        gradeInput.value = "";
+
+        message.innerHTML = "添加成功！";
+    }
+
+    addBtn.addEventListener("click",function(){
+        addStudent();
+    });
+
+    showInfo();
+
+
+</script>
+
+</body>
+
+</html>
