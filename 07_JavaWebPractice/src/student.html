@@ -200,7 +200,32 @@
 
     showInfo();
 
+    let jsonData = JSON.stringify(students);
+    console.log(jsonData);
 
+    let newStudents = JSON.parse(jsonData);
+    console.log(newStudents);
+
+    let serverData = `
+[
+    {
+        "name": "Tom",
+        "age": 23,
+        "grade": 91
+    },
+    {
+        "name": "Lucy",
+        "age": 20,
+        "grade": 86
+    }
+]
+`;
+
+    let studentsFromServer = JSON.parse(serverData);
+
+    students = studentsFromServer;
+
+    showInfo();
 </script>
 
 </body>
