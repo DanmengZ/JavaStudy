@@ -1,10 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
-$END$
+<div id="app">
+  <h1>学生管理系统</h1>
+
+  <h2>添加学生</h2>
+
+  <input v-model="name" placeholder="姓名">
+  <input v-model="age" placeholder="年龄">
+  <input v-model="grade" placeholder="成绩">
+  <button @click="addStudent">添加学生</button>
+
+  <p> {{message}} </p>
+
+  <hr>
+
+  <h2>学生列表</h2>
+  搜索:
+  <input
+          v-model="keyword"
+          placeholder="输入姓名"
+  >
+  <br><br>
+
+  <div v-for="(student,index) in filteredStudents"
+       :key="student.id"
+  >
+
+    <p>姓名：{{student.name}}</p>
+    <p>年龄：{{student.age}}</p>
+    <p>成绩：{{student.grade}}</p>
+
+    <p v-if="student.grade >= 60">是否通过：是</p>
+    <p v-else>是否通过：否</p>
+
+    <div v-if="editingId === student.id">
+      新成绩：
+      <input v-model="editGrade">
+      <button @click="updateStudent(student)">
+        保存
+      </button>
+      <button @click="cancelEdit">
+        取消
+      </button>
+    </div>
+
+    <div v-else>
+      <button @click="startEdit(student)">
+        修改成绩
+      </button>
+    </div>
+
+    <button @click="deleteStudent(student.id)">
+      删除
+    </button>
+    <hr>
+  </div>
+
+</div>
+
+<!--Vue-->
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+<script>
+  const app = Vue.createApp({
+    data(){
+      return{
+
+        name:"",
+        age:"",
+        grade:"",
+
+        keyword:"",
+        message:"",
+        editingId:null,
+        editGrade:"",
+
+        students:[
+          {
+            id: 1,
+            name: "Alice",
+            age: 21,
+            grade: 88
+          },
+
+          {
+            id: 2,
+            name: "Bob",
+            age: 22,
+            grade: 75
+          },
+
+          {
+            id: 3,
+            name: "Jack",
+            age: 20,
+            grade: 55
+          }
+        ]
+
+      };
+    },
+
+    computed:{
+      filteredStudents(){
+        return this.students.filter(student => {
+          return student.name
+                  .toLowerCase()
+                  .includes(this.keyword.toLowerCase());
+        });
+      }
+    },
+
+    methods:{
+      addStudent(){
+        if(this.name === ""){
+          this.message = "姓名不能为空";
+          return;
+        }
+        if(this.age === ""){
+          this.message = "请输入年龄";
+          return;
+        }
+        let age = Number(this.age);
+
+        if(isNaN(age)){
+          this.message = "年龄必须是数字";
+          return;
+        }
+
+        if(age <= 0){
+          this.message = "年龄必须大于0";
+          return;
+        }
+
+        if(this.grade === ""){
+          this.message = "请输入成绩";
+          return;
+        }
+
+        let grade = Number(this.grade);
+
+        if(isNaN(grade)){
+          this.message = "成绩必须是数字";
+          return;
+        }
+
+        if(grade < 0 || grade > 100){
+          this.message = "成绩必须在0到100之间";
+          return;
+        }
+
+        let student = {
+          id:Date.now(),
+          name:this.name,
+          age:age,
+          grade:grade
+        };
+
+        this.students.push(student);
+
+        this.name = "";
+        this.age = "";
+        this.grade = "";
+
+        this.message = "添加成功！";
+      },
+
+      deleteStudent(id){
+        this.students = this.students.filter(student => {
+          return student.id !== id;
+        });
+        this.message = "删除成功！";
+      },
+      startEdit(student){
+        this.editingId = student.id;
+        this.editGrade = student.grade;
+      },
+
+      updateStudent(student){
+        if(this.editGrade === ""){
+          this.message = "请输入成绩";
+          return;
+        }
+
+        let grade = Number(this.editGrade);
+
+        if(isNaN(grade)){
+          this.message = "成绩必须是数字";
+          return;
+        }
+
+        if(grade < 0 || grade > 100){
+          this.message = "成绩必须在0到100之间";
+          return;
+        }
+
+        student.grade = grade;
+
+        this.editingId = null;
+        this.message = "修改成功！";
+      },
+
+      cancelEdit(){
+        this.editingId = null;
+        this.editGrade = "";
+      }
+
+    }
+  });
+  app.mount("#app");
+
+</script>
 </body>
 </html>
